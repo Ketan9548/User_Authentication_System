@@ -1,7 +1,10 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Home = () => {
+    const location = useLocation();
+
     return (
         <div className="relative">
             {/* Navbar */}
@@ -27,12 +30,23 @@ const Home = () => {
                         >
                             Login
                         </NavLink>
-                        <NavLink
-                            to="/register"
-                            className="text-white bg-blue-700 ml-2 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        >
-                            Sign Up
-                        </NavLink>
+
+
+                        {location.pathname === '/homecontaints' ? (
+                            <NavLink
+                                to="/"
+                                className="text-white bg-blue-700 ml-2 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                SignOut
+                            </NavLink>
+                        ) : (
+                            <NavLink
+                                to="/register"
+                                className="text-white bg-blue-700 ml-2 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                            >
+                                Sign Up
+                            </NavLink>
+                        )}
                     </div>
                     <div
                         className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
