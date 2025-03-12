@@ -8,19 +8,19 @@ import 'dotenv/config'
 const userauthentiucation = express.Router();
 
 
-const passwordvalidation = (password) => {
-    const minlength = 8;
-    const regx = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/'
+const passwordValidation = (password) => {
+    const minLength = 8;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    if (password.length < minlength) {
+    if (password.length < minLength) {
         return "Password should be at least 8 characters long.";
     }
 
-    if (!regx.test(password)) {
+    if (!regex.test(password)) {
         return "Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.";
     }
     return null;
-}
+};
 
 userauthentiucation.post('/register', async (req, res) => {
     try {
@@ -28,10 +28,10 @@ userauthentiucation.post('/register', async (req, res) => {
 
         const exituser = await UserModel.findOne({ email });
         if (exituser) {
-            return res.status(400).json({ msg: 'User already exists' });
+            return res.status(400).json({ message: 'User already exists' });
         }
 
-        const passwordcheck = passwordvalidation(password);
+        const passwordcheck = passwordValidation(password);
         if (passwordcheck) {
             return res.status(400).json({ msg: passwordcheck });
         }
@@ -41,7 +41,7 @@ userauthentiucation.post('/register', async (req, res) => {
 
         const newuser = await UserModel.create({ username, email, password: hashedPassword });
         await newuser.save();
-        res.status(200).json({ msg: 'User created successfully' });
+        res.status(200).json({ message: 'User created successfully' });
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ message: "Internal server error", error });
@@ -54,13 +54,13 @@ userauthentiucation.post('/login', async (req, res) => {
         const { email, password } = req.body;
         const user = await UserModel.findOne({ email });
         if (!user) {
-            return res.status(400).json({ msg: 'User not found' });
+            return res.status(400).json({ message: 'User not found' });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
 
         if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid password' });
+            return res.status(400).json({ message: 'Invalid password' });
         }
 
         const token = jwt.sign({ id: UserModel._id, username: UserModel.username }, process.env.JWT_SECRET, { expiresIn: '1h' });

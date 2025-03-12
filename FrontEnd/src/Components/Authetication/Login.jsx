@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 const Login = () => {
     const [data, setdata] = useState({
@@ -8,16 +10,47 @@ const Login = () => {
         password: '',
     });
 
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/api/login', { email: data.email, password: data.password })
+            console.log("response value is: ", response.data);
+            localStorage.setItem('token', response.data.token);
+            navigate('/homecontaints')
+        } catch (error) {
+            if (error.response) {
+                setErrorMessage(error.response.data.message || 'Login Failed please try again...')
+            }
+            else {
+                setErrorMessage('Network error. Please check your connection')
+            }
+            console.error("Error During the login in the system", error);
+        }
+    }
+
     const handleChange = (e) => {
         setdata({ ...data, [e.target.name]: e.target.value });
     };
+
+    useEffect(() => {
+        if (localStorage.getItem('token')) {
+            navigate('/homecontaints');
+        }
+    }, []);
 
     return (
         <>
             <div className="flex justify-center items-center min-h-screen bg-gray-100">
                 <div className="bg-white p-8 rounded-lg shadow-md w-96">
                     <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
-                    <form>
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm text-center mb-4">{errorMessage}</p>
+                    )}
+                    <form onSubmit={handleSubmit}>
                         <label className="block mt-4 mb-2 font-medium">Email</label>
                         <input
                             name="email"

@@ -5,7 +5,7 @@ import cors from 'cors'
 
 const app = express();
 
-const port = 4000 || 
+const port = 6000 || 
 
 
 app.use(cors())

@@ -1,5 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 const Registration = () => {
@@ -8,6 +10,26 @@ const Registration = () => {
         password: '',
         email: '',
     });
+
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await axios.post('/api/register', { username: data.username, email: data.email, password: data.password })
+            console.log("response value is: ", response.data);
+            navigate('/login')
+        } catch (error) {
+            if (error.response) {
+                setErrorMessage(error.response.data.message || 'Login Failed please try again...')
+            }
+            else {
+                setErrorMessage('Network error. Please check your connection')
+            }
+        }
+    }
 
     const handleChange = (e) => {
         setdata({ ...data, [e.target.name]: e.target.value });
@@ -18,7 +40,10 @@ const Registration = () => {
             <div className="flex justify-center items-center min-h-screen bg-gray-100">
                 <div className="bg-white p-8 rounded-lg shadow-md w-96">
                     <h2 className="text-2xl font-bold text-center mb-4">Registration</h2>
-                    <form>
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm text-center mb-4">{errorMessage}</p>
+                    )}
+                    <form onSubmit={handleSubmit}>
                         <label className="block mb-2 font-medium">Username</label>
                         <input
                             name="username"
