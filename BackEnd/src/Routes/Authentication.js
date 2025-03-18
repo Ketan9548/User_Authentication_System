@@ -71,4 +71,27 @@ userauthentiucation.post('/login', async (req, res) => {
     }
 })
 
+
+userauthentiucation.get('/getallusers', async (req, res) => {
+    try {
+        const users = await UserModel.find();
+        res.status(200).json({ message: "all users: ", users });
+    } catch (error) {
+        console.error({ message: "error during the get all the users ", error: error.message });
+    }
+})
+
+userauthentiucation.get('/users/:username', async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ username: req.params.username });
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json({ message: "all users: ", user });
+    } catch (error) {
+        console.error({ message: "error during the get user by username ", error: error.message });
+    }
+
+})
+
 export default userauthentiucation;
