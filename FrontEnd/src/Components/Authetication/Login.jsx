@@ -69,7 +69,7 @@ const Login = () => {
                                 Register here
                             </NavLink>
                         </p>
-                        <NavLink to="/forgot-password" className="text-blue-500 hover:underline mt-2 block">
+                        <NavLink to="/forgotpassword" className="text-blue-500 hover:underline mt-2 block">
                             Forgot Password?
                         </NavLink>
                     </div>

@@ -67,7 +67,7 @@ const Home = () => {
                 </div>
             </nav>
             <div className="">
-                <Outlet user ={users} />
+                <Outlet />
             </div>
         </div>
     );

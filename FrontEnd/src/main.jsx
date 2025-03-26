@@ -7,34 +7,21 @@ import Registration from './Components/Authetication/Registration.jsx'
 import Login from './Components/Authetication/Login.jsx'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router-dom'
 import HomeContaints from './Components/Home/HomeContaints.jsx'
-// import axios from "axios";
-import { useState, createContext } from 'react'
+import Password_Fogot from './Components/PasswordRestart/Password_Fogot.jsx'
+import Password_Restart from './Components/PasswordRestart/Password_Restart.jsx'
 
-const [users, setUsers] = useState('');
-const UserContext = createContext('')
-
-
-// const getdata = async (users) => {
-//   try {
-//     const response = await axios.get(`/api/users/${users}`);
-//     setUsers(response.data.username);
-//     console.log("Data: ", response.data);
-//   } catch (error) {
-//     console.error("Error: ", error);
-//   }
-// }
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <UserContext.Provider value={users}>
-      <Route path='' element={<App />}>
-        <Route path='/' element={<Home />}>
-          <Route path='homecontaints' element={<HomeContaints />} />
-          <Route path='login' element={<Login />} />
-          <Route path='register' element={<Registration />} />
-        </Route>
+    <Route path='' element={<App />}>
+      <Route path='/' element={<Home />}>
+        <Route path='homecontaints' element={<HomeContaints />} />
+        <Route path='login' element={<Login />} />
+        <Route path='register' element={<Registration />} />
+        <Route path='forgotpassword' element={<Password_Fogot />} />
+        <Route path='restartpassword' element={<Password_Restart />} />
       </Route>
-    </UserContext.Provider>
+    </Route>
   )
 )
 
